@@ -1,0 +1,166 @@
+/* ========================================================================
+ *
+ * ======================================================================== */
+Box.define('Demo.validator.indexDetail', {
+
+    extend: 'Box.Component',
+
+    templates: {
+        main: ['<div style="margin-left: 30px;margin-top: 50px;">' +
+        '<div class="div_list"></div>' +
+        '<button class="button k-button k-primary">查看源代码</button>'+
+        '<div class="text"></div>'+
+        '</div>']
+    },
+
+    elements: {
+        list: '.div_list',
+        button: '.button',
+        text:'.text',
+       name:'filterUserName'
+    },
+
+    events:{
+        'click button':'checkFile'
+    },
+    delegates: {
+        'click  {button.btn_search}': 'filterItem',
+        'click  {button.btn_add}':'addItem'
+    },
+
+    setup: function () {
+        this.el.list.HYGrid({
+            dataSource: {
+                schema: {
+                    model: {
+                        id: "ItemCode"
+                    }
+                },
+                // transport: {
+                //     read: "api/ItemAuth/GetAllUserItemAuths"  //从数据库读取数据
+                // }
+                data: [
+                    {UserName: "Aang", Item: 1, History: 1,CreatedTime: "2018-07-28 09:46:09", LastAlterTime: "2018-07-28 09:46:09" },
+                    {UserName: "Chang", Item: 1, History: 0,CreatedTime: "2018-07-28 09:46:09", LastAlterTime: "2018-07-28 09:46:09" },
+                    {UserName: "Deng", Item: 0, History: 1,CreatedTime: "2018-07-28 09:46:09", LastAlterTime: "2018-07-28 09:46:09" },
+                    {UserName: "Eai", Item: 0, History: 1,CreatedTime: "2018-07-28 09:46:09", LastAlterTime: "2018-07-28 09:46:09" },
+                    {UserName: "Bong", Item: 1, History: 0,CreatedTime: "2018-07-28 09:46:09", LastAlterTime: "2018-07-28 09:46:09" }
+
+                ]
+            },
+            // height: Box.Common.fnGetGridHeight(),
+            toolbar: [
+                {
+                    template: '<label>用户:&nbsp;&nbsp;&nbsp;&nbsp;</label><input class="filterUserName k-textbox"/>'
+                },
+                {
+                    template: '<button class="btn_search k-button k-primary" value="search" style="margin-left: 5px">查询</button>'+
+                    '<button class="btn_add k-button k-primary k-button-icontext" value="upload" style="margin-left: 5px;"><span class="k-icon fa fa-cloud-download"></span>新增</button>'
+                },
+                {
+                    name: "excel"
+                }
+            ],
+            excelExport: function (e) {
+                //格式化数值,调用GridColumn里面的template函数格式化
+                var gridColumns = this.columns;
+                var sheet = e.workbook.sheets[0];
+                if (sheet.rows.length <= 1) {
+                    Box.Notify.warning('没指定要导出的内容');
+                    e.preventDefault();
+                    return;
+                }
+                e.workbook.fileName = '用户权限';
+                for (var rowIndex = 1; rowIndex < sheet.rows.length; rowIndex++) {
+                    var row = sheet.rows[rowIndex];
+
+                    if (row.type != "group-header") {//分组的那行不处理
+                        var groupCount = this.dataSource.group().length; //分组的个数
+                        for (var cellIndex = groupCount; cellIndex < row.cells.length; cellIndex++) {
+                            if (row.cells[cellIndex].value) { //当前单元格没有值的不处理
+                                var dataItem = {};
+                                dataItem[gridColumns[cellIndex - groupCount].field] = row.cells[cellIndex].value;
+                                if (Box.isFunction(gridColumns[cellIndex - groupCount].template)) {
+                                    row.cells[cellIndex].value = gridColumns[cellIndex - groupCount].template(dataItem);
+                                }
+                            }
+                        }
+                    }
+
+                }
+            },
+            columns: [
+                {
+                    field: "UserName",
+                    title: '用户'
+
+                },
+                {
+                    field: "Item",
+                    title: "收费项目"
+                },
+                {
+                    field: "History",
+                    title: "历史"
+                },
+                {
+                    field: "CreatedTime",
+                    title: "创建时间"
+                },
+                {
+                    field: "LastAlterTime",
+                    title: "更新时间"
+                }
+            ],
+            editable: false,
+            selectable: true
+        });
+
+
+
+        this.el.list.find('.btn_add').css({"float": "right"});  //把导出按钮放置到右边
+    },
+
+    checkFile:function(){
+        var me = this;
+        var myCodeMirror = CodeMirror(this.el.text[0], {
+            // value: "function myScript(){return 100;}\n",
+            mode: "javascript",
+            theme: 'dracula'
+        });
+        Box.require('text!app/upload/index.js', function (text) {
+            myCodeMirror.setValue(text)
+        });
+        this.el.button.attr('disabled','disabled');
+
+    },
+
+    filterItem: function () {
+        var item_value = this.el.target.find('.filterUserName').val();
+        var grid = this.el.list.data("kendoGrid");
+
+        // if (item_value) { //如果用户输入了筛选值,就进行筛选,如果没有就重新请求一下数据源
+        grid.dataSource.filter(
+            [
+                {
+                    field: "UserName",
+                    operator: "contains",
+                    value: item_value
+                }
+            ]
+        );
+        // }
+        // else {
+        //     grid.dataSource.read();
+        // }
+
+    },
+    addItem:function () {
+        var name=this.el.name.val();
+
+        if (me._isExist(counterPartyTrust)) {
+                Box.Notify.warning("添加对象已经存在，不能重复添加!");
+                return;
+            }
+    }
+});

@@ -1,0 +1,48 @@
+Box.define('Demo.panel.index',{
+
+    extend:'Box.Panel',
+
+    templates:{
+        content:[
+
+            '<div>' +
+            '<div class="editInfo">{Message}</div>'+
+            '<div class="text col-md-7" style="display:inline-block;width:750px;"></div>'+
+            '</div>']
+    },
+
+    contentElements:{
+        editInfo: '.editInfo',
+        text: '.text'
+    },
+
+    getContentData:function(){
+        return {
+            Message:'这是内容'
+        }
+    },
+
+    defaultStatus: 'expand',
+
+    showHeader: true,
+
+    title: 'Box.Panel',
+
+    icon:'fa fa-columns',
+
+    width:'700px',
+
+    height: '600px',
+
+    init:function () {
+        var me=this;
+        var myCodeMirror = CodeMirror(this.el.text[0],{
+            // value: "function myScript(){return 100;}\n",
+            mode:  "javascript",
+            theme: 'dracula'//设置主题，先找到主题对应的CSS文件引入进来，再设置一下名字，再改一下样式
+        });
+        Box.require('text!app/panel/index.js', function (text) {
+            myCodeMirror.setValue(text)
+        });
+    }
+});

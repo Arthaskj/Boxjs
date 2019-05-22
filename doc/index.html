@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head lang="en">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Box Library API</title>
+
+    <!-- Set render engine for 360 browser -->
+    <meta name="renderer" content="webkit">
+
+    <!-- No Baidu Siteapp-->
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+
+    <link rel="stylesheet" href="resource/css/amazeui.min.css"/>
+    <link rel="stylesheet" href="resource/css/app.css"/>
+    <link rel="stylesheet" href="resource/css/prettify.css"/>
+</head>
+<body class="scroll" style="">
+
+<header id="amz-header" class="am-header-fixed">
+    <div class="amz-container am-cf">
+        <h1>
+            <a href="/">Box Library</a>
+            <span class="am-badge am-badge-danger">1.0.0</span>
+        </h1>
+        <button class="am-btn am-btn-primary am-show-sm-only" data-am-collapse="{target: '.amz-header-nav'}">
+            <span class="am-sr-only">导航切换</span>
+            <span class="am-icon-bars"></span>
+        </button>
+        <nav>
+            <ul class="amz-header-nav am-collapse">
+                <li>
+                    <a href="">首页</a>
+                </li>
+                <li>
+                    <a href="">关于Box Library</a>
+                </li>
+                <li>
+                    <a href="">5分钟快速上手</a>
+                </li>
+                <li>
+                    <a href="">开发API</a>
+                </li>
+                <li>
+                    <a href="">开发规范</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<div id="amz-banner" class="amz-banner">
+    <div class="amz-container">
+        <h1>&nbsp;</h1>
+        <p>&nbsp;</p>
+    </div>
+</div>
+
+<section class="amz-main" id="amz-main"></section>
+
+<div class="amz-toolbar" id="amz-toolbar">
+    <a href="javascript:void(0);" title="回到顶部" class="am-icon-btn am-icon-arrow-up am-active" id="amz-go-top"></a>
+</div>
+
+<footer class="amz-footer" style="display: block;">
+    <div class="am-g am-g-fixed">
+        <div class="col-md-4 col-md-push-8 am-u-md-4 am-u-md-push-8" style="display: none">
+            <ul class="amz-social">
+                <li>
+                    <a href="javascript: void(0)" data-am-popover="{content: 'Amaze UI 交流 Q 群：374946651'}"
+                       title="Amaze UI 用户交流群" target="_blank"><span class="am-icon-qq"></span></a>
+                </li>
+                <li>
+                    <a href="javascript:void(0);" title="云适配微博" target="_blank"><span class="am-icon-weibo"></span></a>
+                </li>
+                <li>
+                    <a href="#am-wechat" title="云适配微信" data-am-modal=""><span class="am-icon-wechat"></span></a>
+                </li>
+                <li>
+                    <a class="new-issue" href="" target="_blank" title="Bug 反馈"><span
+                            class="am-icon-paper-plane"></span></a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-8 col-md-pull-4 am-u-md-8 am-u-md-pull-4">
+            <h2 class="amz-fd">
+                <img src="resource/images/logo.png" class="logo">
+                <a>海益信息 · 金融科技</a></h2>
+            <ul class="amz-links">
+                <li>
+                    <a href="http://www.haiyi-info.com">公司官网</a> |
+                    <a href="http://www.haiyi-info.com/#/about/us">关于我们</a> |
+                    <a href="http://www.haiyi-info.com/#/about/contact">联系我们</a>
+                </li>
+            </ul>
+            <p class="amz-cp">
+                © Copyright © 2018 安徽海益信息科技有限公司版权所有
+            </p>
+        </div>
+    </div>
+</footer>
+
+<script id="template_header_item" type="text/template">
+    <tpl for=".">
+        <li data-name="{name}">
+            <a href="{href}">{title}</a>
+        <li>
+    </tpl>
+</script>
+
+<script id="template_body_main" type="text/template">
+    <div id="amz-main-body" class="am-g am-g-fixed">
+        <tpl if="this.hasChild()">
+            <div class="col-md-3 am-u-md-3">
+                <div class="am-sticky-placeholder" style="margin: 0px;">
+                    <div id="amz-offcanvas" class="am-offcanvas doc-offcanvas" style="margin: 0px;">
+                        <section class="amz-sidebar am-offcanvas-bar">
+                            <ul id="children_body" class="am-nav"></ul>
+                        </section>
+                    </div>
+                </div>
+            </div>
+            <div id="doc-content" class="col-md-9 am-u-md-9 doc-content"></div>
+            <tpl else>
+                <div class="col-md-12 am-u-md-12">
+                    <div id="doc-content" class="doc-content"></div>
+                </div>
+            </tpl>
+    </div>
+</script>
+
+<script id="template_body_childrens" type="text/template">
+    <tpl for=".">
+        <tpl if="this.isHeader(values)">
+            <li class="am-nav-header">{[values]}</li>
+            <tpl else>
+                <li id="nav_{name}">
+                    <a href="{name:this.formatHref()}">
+                        {title}
+                        <span class="am-nav-en">{name}</span>
+                    </a>
+                </li>
+            </tpl>
+        </tpl>
+</script>
+
+<script type="text/javascript" src="resource/js/jquery-1.8.1.min.js"></script>
+<script type="text/javascript" src="resource/js/box.debug.js"></script>
+
+<script type="text/javascript">
+
+    Box.app.Application.create({
+        name: 'API',
+        baseFolder: '../doc/app',
+        paths: {},
+        resources: [
+            'resource/js/require.min.js',
+            'resource/js/prettify.js',
+            'resource/js/showdown.js'
+        ],
+        launch: 'API.Viewport',
+        beforeImportResources: function (resources) {
+
+        },
+        afterImportResources: function () {
+
+        }
+    });
+
+</script>
+
+</body>
+</html>

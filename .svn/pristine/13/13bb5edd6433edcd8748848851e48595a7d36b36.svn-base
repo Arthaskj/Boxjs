@@ -1,0 +1,45 @@
+[
+  {
+    "group": "box_ui",
+    "text": "Box UI组",
+    "items": [
+      {
+        "text": "Box.Window",
+        "items": [
+          {
+            "text": "基本用法",
+            "url": "#window/index"
+          },
+          {
+            "text": "高级用法",
+            "url": "#window/index"
+          }
+        ]
+      },
+      {
+        "text": "Box.Panel",
+        "url": "#panel/index"
+      },
+      {
+        "text": "Box.GridPage",
+        "url": "#gridpage/index"
+      },
+      {
+        "text": "Box.Notify",
+        "url": "#notify/index"
+      },
+      {
+        "text": "Box.ConfirmDialog",
+        "url":"#confirmdialog/index"
+      },
+      {
+        "text": "Box.Reminder",
+        "url":"#reminder/index"
+      },
+      {
+        "text": "Box.QuestionReminder",
+        "url":"#questionreminder/index"
+      }
+    ]
+  }
+]

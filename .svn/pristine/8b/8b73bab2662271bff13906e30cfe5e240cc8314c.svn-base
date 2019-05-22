@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title>面板切换</title>
+		<link rel="stylesheet" href="../resource/css/amazeui.min.css">
+		<style type="text/css">
+ 			body {padding: 100px;}
+		</style>
+	</head>
+	<body>
+
+		<button type="button" class="am-btn am-btn-default">添加一个新TAB</button>
+		<!--<button type="button" class="am-btn am-btn-primary">主色按钮</button>
+		<button type="button" class="am-btn am-btn-secondary">次色按钮</button>
+		<button type="button" class="am-btn am-btn-success">绿色按钮</button>
+		<button type="button" class="am-btn am-btn-warning">橙色按钮</button>
+		<button type="button" class="am-btn am-btn-danger">红色按钮</button> -->
+
+		<div data-am-widget="tabs" class="am-tabs am-tabs-default" style="margin: 10px 0 0 0;">
+			<ul class="am-tabs-nav am-cf">
+				<li class="am-active">
+					<a href="javascript:void(0);">青春</a>
+				</li>
+				<li class="">
+					<a href="javascript:void(0);">彩虹</a>
+				</li>
+				<li class="">
+					<a href="javascript:void(0);">歌唱</a>
+				</li>
+			</ul>
+			<div class="am-tabs-bd">
+				<div class="am-tab-panel am-active">
+					【青春】那时候有多好，任雨打湿裙角。忍不住哼起，心爱的旋律。绿油油的树叶，自由地在说笑。燕子忙归巢，风铃在舞蹈。经过青春的草地，彩虹忽然升起。即使视线渐渐模糊，它也在我心里。就像爱过的旋律，没人能抹去。因为生命存在失望，歌唱，所以才要歌唱。
+				</div>
+				<div class="am-tab-panel ">
+					【彩虹】那时候有多好，任雨打湿裙角。忍不住哼起，心爱的旋律。绿油油的树叶，自由地在说笑。燕子忙归巢，风铃在舞蹈。经过青春的草地，彩虹忽然升起。即使视线渐渐模糊，它也在我心里。就像爱过的旋律，没人能抹去。因为生命存在失望，歌唱，所以才要歌唱。
+				</div>
+				<div class="am-tab-panel ">
+					【歌唱】那时候有多好，任雨打湿裙角。忍不住哼起，心爱的旋律。绿油油的树叶，自由地在说笑。燕子忙归巢，风铃在舞蹈。经过青春的草地，彩虹忽然升起。即使视线渐渐模糊，它也在我心里。就像爱过的旋律，没人能抹去。因为生命存在失望，歌唱，所以才要歌唱。
+				</div>
+			</div>
+		</div>
+        <div id="todo">
+
+        </div>
+
+		<script type="text/javascript" src="../resource/js/jquery-1.8.1.min.js"></script>
+		<script type="text/javascript" src="../resource/js/box.debug.js"></script>
+
+		<script type="text/javascript">
+		 
+		    Box.app.Application.create({
+		        name: 'App',
+		        baseFolder: '../app',
+		        paths: {},
+		        resources: [],
+		        launch: 'App.Tab'
+		    });
+
+		</script>
+
+	</body>
+</html>

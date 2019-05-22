@@ -1,0 +1,78 @@
+/*===============================================================
+* 描述：调用Box.Reminder函数实现弹出提示信息框
+* ======================================================================== */
+
+Box.define('Demo.reminder.index',{
+
+    extend:'Box.Component',
+
+    templates:{
+        main:[
+            '<div style="margin-left: 50px;margin-top: 50px;">'+
+            '<div class="col-md-5">' +
+            '<div style="margin-bottom: 15px"><lable>姓名：</lable>'+
+            '<input class="k-textbox" style="margin-left: 15px;"/> </div>' +
+            '<div style="margin-bottom: 15px"><lable>年龄：</lable>'+
+            '<input class="k-textbox" style="margin-left: 15px;"/> </div>' +
+            '<div><lable>生日：</lable>'+
+            '<input class="k-textbox" style="margin-left: 15px;"/></div> ' +
+            '<div class="reminder" style="margin-bottom: 15px"></div> '+
+            '<div style="margin-bottom: 20px"><lable>电话：</lable>'+
+            '<input class="k-textbox" style="margin-left: 15px;"/></div> ' +
+            '<div>'+
+            '<button class="confirm k-button k-primary" style="">确认</button>'+
+            '<button class="cancel k-button k-primary" style="margin-left: 30px">取消</button>'+
+            '</div>'+
+            '</div>'+
+            '<div class="col-md-7">' +
+            '<button class="button k-button k-primary">查看源代码</button> ' +
+            '<div class="text"></div>'+
+            '</div>'+
+            '</div>'
+        ]
+    },
+
+    elements:{
+        reminder:'.reminder',
+        text:'.text',
+        confirm:'.confirm',
+        cancel:'.cancel',
+        button:'.button'
+    },
+
+    events:{
+      'click confirm':'confirmReminder',
+        'click cancel':'.cancelReminder',
+        'click button':'checkFile'
+    },
+
+    setup:function () {
+    },
+    confirmReminder:function () {
+        Box.Reminder.show({
+                    renderTo: this.el.reminder,
+                    message: '生日格式应为yy/mm/dd',
+                    name: ''//在整个系统里面必须是唯一的,否则可能出现显示不正常的问题
+                });
+    },
+    // cancelReminder:function () {
+    //     Box.Reminder.show({
+    //                 renderTo: this.el.reminder,
+    //                 message: '以下债券详情为选填',
+    //                 name: 'message'//在整个系统里面必须是唯一的,否则可能出现显示不正常的问题
+    //             });
+    // },
+    checkFile:function () {
+        var me = this;
+        var myCodeMirror = CodeMirror(this.el.text[0], {
+            // value: "function myScript(){return 100;}\n",
+            mode: "javascript",
+            theme: 'dracula'
+        });
+        Box.require('text!app/reminder/index.js', function (text) {
+            myCodeMirror.setValue(text)
+        });
+        this.el.button.attr('disabled','disabled');
+    }
+
+});

@@ -1,0 +1,47 @@
+Box.define('Demo.window.indexDetails',{
+
+    extend:'Box.Component',
+    requires:[
+        'Demo.reminder.index'
+    ],
+
+    templates:{
+        main:[
+             '<div style="margin-left: 30px;margin-top: 50px;">'+
+                 '</div>'
+        ]
+    },
+    setup:function () {
+
+        Box.Window.show({
+            init: function () {
+                 new Demo.reminder.index({
+                     renderTo:this.el.content
+                 })
+            },
+            title: " window",
+            autoOpen: false,
+            closeAction: 'destroy',
+            width: 800,
+            height: 450,
+            buttons: [
+                {
+                    name: 'btn_Add',
+                    text: '新增',
+                    icon: 'fa-check',
+                    theme: "k-info",
+                    handler: ''
+                },
+                {
+                    name: 'btn_Close',
+                    text: '关闭',
+                    icon: 'fa-times',
+                    handler: function () {
+                        this.fnClose();
+                    }
+                }
+            ]
+        });
+    }
+
+});

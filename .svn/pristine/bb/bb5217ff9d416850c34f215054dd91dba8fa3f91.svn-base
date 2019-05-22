@@ -1,0 +1,68 @@
+Box.define('Demo.panel.index', {
+
+    extend: 'Box.Component',
+
+    requires: [
+        'Demo.panel.indexDetail'
+    ],
+
+    templates: {
+        main: [
+
+            '<div>' +
+            '<div class="col-md-6">' +
+            '<div class="panelShow "></div>' +
+            '</div>' +
+            '<div class="col-md-6">' +
+            '<div class="text" style="display:inline-block;width:750px;"></div>' +
+            '<div><button class="k-button k-primary button">查看源代码</button></div>' +
+            '</div>' +
+            '</div>']
+    },
+
+    elements: {
+        text: '.text',
+        button: '.button',
+        panelshow: '.panelShow'
+    },
+    events: {
+        'click button': 'searchFile'
+    },
+
+    getContentData: function () {
+        return {
+            Message: '这是内容'
+        }
+    },
+
+    defaultStatus: 'expand',
+
+    showHeader: true,
+
+    title: 'Box.Panel',
+
+    icon: 'fa fa-columns',
+
+    width: '500px',
+
+    height: '400px',
+
+    setup: function () {
+        var me = this;
+        var panel = new Demo.panel.indexDetail({
+            renderTo: this.el.panelshow
+        });
+    },
+
+    searchFile: function () {
+        var myCodeMirror = CodeMirror(this.el.text[0], {
+            // value: "function myScript(){return 100;}\n",
+            mode: "javascript",
+            theme: 'dracula'//设置主题，先找到主题对应的CSS文件引入进来，再设置一下名字，再改一下样式
+        });
+        Box.require('text!app/panel/indexDetail.js', function (text) {
+            myCodeMirror.setValue(text)
+        });
+    }
+});
+

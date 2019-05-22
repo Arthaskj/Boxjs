@@ -1,0 +1,37 @@
+Box.define('Demo.reminder.index',{
+//可以自己做一个样式出来例如填写字段时弹出提示
+    extend:'Box.Reminder',
+
+    templates:{
+        content:[
+            '<div>'+
+            '<div class="reminder"></div>'+
+            '<div class="text"></div>'+
+                '</div>'
+        ]
+    },
+
+    contentElements:{
+        reminder:'.reminder',
+        text:".text"
+    },
+
+    init:function () {
+        Box.Reminder.show({
+            renderTo: this.el.reminder,
+            message: '以下债券详情为选填',
+            name: ''//在整个系统里面必须是唯一的,否则可能出现显示不正常的问题
+        });
+
+        var me=this;
+        var myCodeMirror = CodeMirror(this.el.text[0],{
+            // value: "function myScript(){return 100;}\n",
+            mode:  "javascript",
+            theme: 'dracula'//设置主题，先找到主题对应的CSS文件引入进来，再设置一下名字，再改一下样式
+        });
+        Box.require('text!app/notify/index.js', function (text) {
+            myCodeMirror.setValue(text)
+        });
+    }
+
+});

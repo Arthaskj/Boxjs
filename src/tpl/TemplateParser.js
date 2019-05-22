@@ -1,0 +1,152 @@
+Box.define('Box.tpl.TemplateParser', {
+
+    useFormat: false,
+
+    definitions: false,
+
+    constructor: function (config) {
+        Box.apply(this, config);
+    },
+
+    doTpl: Box.emptyFn,
+
+    parse: function (str) {
+        var me = this,
+            len = str.length,
+            aliases = {
+                elseif: 'elif'
+            },
+            topRe = me.topRe,
+            actionsRe = me.actionsRe,
+            index, stack, s, m, t, prev, frame, subMatch, begin, end, actions,
+            prop;
+
+        me.level = 0;
+        me.stack = stack = [];
+
+        for (index = 0; index < len; index = end) {
+            topRe.lastIndex = index;
+            m = topRe.exec(str);
+
+            if (!m) {
+                me.doText(str.substring(index, len));
+                break;
+            }
+
+            begin = m.index;
+            end = topRe.lastIndex;
+
+            if (index < begin) {
+                me.doText(str.substring(index, begin));
+            }
+
+            if (m[1]) {
+                end = str.indexOf('%}', begin + 2);
+                me.doEval(str.substring(begin + 2, end));
+                end += 2;
+            } else if (m[2]) {
+                end = str.indexOf(']}', begin + 2);
+                me.doExpr(str.substring(begin + 2, end));
+                end += 2;
+            } else if (m[3]) {
+                me.doTag(m[3]);
+            } else if (m[4]) {
+                actions = null;
+                while ((subMatch = actionsRe.exec(m[4])) !== null) {
+                    s = subMatch[2] || subMatch[3];
+                    if (s) {
+                        s = Box.String.htmlDecode(s);
+                        t = subMatch[1];
+                        t = aliases[t] || t;
+                        actions = actions || {};
+                        prev = actions[t];
+
+                        if (typeof prev == 'string') {
+                            actions[t] = [prev, s];
+                        } else if (prev) {
+                            actions[t].push(s);
+                        } else {
+                            actions[t] = s;
+                        }
+                    }
+                }
+
+                if (!actions) {
+                    if (me.elseRe.test(m[4])) {
+                        me.doElse();
+                    } else if (me.defaultRe.test(m[4])) {
+                        me.doDefault();
+                    } else {
+                        me.doTpl();
+                        stack.push({
+                            type: 'tpl'
+                        });
+                    }
+                } else if (actions['if']) {
+                    me.doIf(actions['if'], actions);
+                    stack.push({
+                        type: 'if'
+                    });
+                } else if (actions['switch']) {
+                    me.doSwitch(actions['switch'], actions);
+                    stack.push({
+                        type: 'switch'
+                    });
+                } else if (actions['case']) {
+                    me.doCase(actions['case'], actions);
+                } else if (actions['elif']) {
+                    me.doElseIf(actions['elif'], actions);
+                } else if (actions['for']) {
+                    ++me.level;
+
+                    if (prop = me.propRe.exec(m[4])) {
+                        actions.propName = prop[1] || prop[2];
+                    }
+                    me.doFor(actions['for'], actions);
+                    stack.push({
+                        type: 'for',
+                        actions: actions
+                    });
+                } else if (actions['foreach']) {
+                    ++me.level;
+
+                    if (prop = me.propRe.exec(m[4])) {
+                        actions.propName = prop[1] || prop[2];
+                    }
+                    me.doForEach(actions['foreach'], actions);
+                    stack.push({
+                        type: 'foreach',
+                        actions: actions
+                    });
+                } else if (actions.exec) {
+                    me.doExec(actions.exec, actions);
+                    stack.push({
+                        type: 'exec',
+                        actions: actions
+                    });
+                }
+            } else if (m[0].length === 5) {
+                stack.push({
+                    type: 'tpl'
+                });
+            } else {
+                frame = stack.pop();
+                me.doEnd(frame.type, frame.actions);
+                if (frame.type == 'for' || frame.type == 'foreach') {
+                    --me.level;
+                }
+            }
+        }
+    },
+
+    topRe: /(?:(\{\%)|(\{\[)|\{([^{}]+)\})|(?:<tpl([^>]*)\>)|(?:<\/tpl>)/g,
+
+    actionsRe: /\s*(elif|elseif|if|for|foreach|exec|switch|case|eval|between)\s*\=\s*(?:(?:"([^"]*)")|(?:'([^']*)'))\s*/g,
+
+    propRe: /prop=(?:(?:"([^"]*)")|(?:'([^']*)'))/,
+
+    defaultRe: /^\s*default\s*$/,
+
+    elseRe: /^\s*else\s*$/
+
+});

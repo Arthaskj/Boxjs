@@ -1,0 +1,47 @@
+Box.define('Demo.panel.indexDetails',{
+
+    extend:'Box.Component',
+
+    requires:[
+        'Demo.reminder.index'
+    ],
+
+    templates:{
+        main:[
+            '<div>'+
+            '</div>'
+        ]
+    },
+    setup:function () {
+
+        Box.Panel.show({
+            renderTo:this.el.target,
+            init: function () {
+                new Demo.reminder.index({
+                    renderTo:this.el.content
+                })
+            },
+            title: " 新增",
+            width: '700px',
+            height: '400px'
+            // buttons: [
+            //     {
+            //         name: 'btn_Add',
+            //         text: '新增',
+            //         icon: 'fa-check',
+            //         theme: "k-info",
+            //         handler: ''
+            //     },
+            //     {
+            //         name: 'btn_Close',
+            //         text: '关闭',
+            //         icon: 'fa-times',
+            //         handler: function () {
+            //             this.fnClose();
+            //         }
+            //     }
+            // ]
+        });
+    }
+
+});

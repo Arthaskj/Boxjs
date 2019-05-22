@@ -1,0 +1,54 @@
+[
+  {
+    "group": "box_ui",
+    "text": "Box UI组",
+    "items": [
+      {
+        "text": "Box.Window",
+        "items": [
+          {
+            "text": "直接继承Box.Window",
+            "url": "#window/index"
+          },
+          {
+            "text": "在弹出窗体里面调用其他组件",
+            "url": "#window/index"
+          }
+        ]
+      },
+      {
+        "text": "Box.Panel",
+        "items": [
+          {
+            "text": "直接继承Box.Panel",
+            "url": "#panel/index"
+          },
+          {
+            "text": "在Panel里面调用其他组件",
+            "url": "#panel/index"
+          }
+        ]
+      },
+      {
+        "text": "Box.GridPage",
+        "url": "#gridpage/index"
+      },
+      {
+        "text": "Box.Notify",
+        "url": "#notify/index"
+      },
+      {
+        "text": "Box.ConfirmDialog",
+        "url":"#confirmdialog/index"
+      },
+      {
+        "text": "Box.Reminder",
+        "url":"#reminder/index"
+      },
+      {
+        "text": "Box.QuestionReminder",
+        "url":"#questionreminder/index"
+      }
+    ]
+  }
+]

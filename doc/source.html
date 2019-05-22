@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head lang="en">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<title>Box Library Source Code</title>
+
+	<!-- Set render engine for 360 browser -->
+	<meta name="renderer" content="webkit">
+
+	<!-- No Baidu Siteapp-->
+	<meta http-equiv="Cache-Control" content="no-siteapp"/>
+	<link rel="stylesheet" href="resource/css/amazeui.min.css"/>
+	<link rel="stylesheet" href="resource/css/app.css"/>
+	<link rel="stylesheet" href="resource/css/prettify.css"/>
+	<style type="text/css">
+		pre {
+			margin: 10px;
+		}
+	</style>
+</head>
+<body class="scroll" style="height: 1500px">
+
+	<script type="text/javascript" src="resource/js/jquery-1.8.1.min.js"></script>
+	<script type="text/javascript" src="resource/js/box.debug.js"></script>
+
+	<script type="text/javascript">
+
+			Box.app.Application.create({
+		        name: 'API',
+		        baseFolder: '../doc/app',
+		        paths: {},
+		        templateType: 'handlebars',
+		        resources: [
+		            'resource/js/prettify.js',
+		            'resource/js/showdown.js',
+		            'resource/js/handlebars-v3.0.0.js'
+		        ]
+		    });
+
+			Box.app.Application.domain({
+
+				target: document.body,
+				
+				routes: {
+				    '*files': 'parseFiles'
+				},
+
+				parseFiles: function (files) {
+				    var me = this;
+				    files = files.split(',');
+				    if (files[0]) {
+				        document.title = 'Box.' + (files[0]).replace(/\//ig, '.') + ' Source Code';
+				    }
+				    Box.require(Box.Array.map(files, function (file) {
+				        return 'text!../src/' + file + '.js?t=' + +new Date;
+				    }), function () {
+				        var inner = "";
+				        Box.Array.forEach(arguments, function (html) {
+			                inner += html + '\n';
+				        });
+				        me.el.target.html('<pre class="prettyprint linenums">' + inner + '</pre>');
+				        window.prettyPrint && prettyPrint(me.el.target);
+				    });
+				}
+
+			});
+
+		</script>
+
+</body>
+</html>
